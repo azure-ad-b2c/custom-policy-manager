@@ -1,0 +1,30 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="B2CPolicyManager.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="B2CAppId" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Enter B2C App Reg AppId</Value>
+    </Setting>
+    <Setting Name="TenantId" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Enter B2C TenantId or Domain</Value>
+    </Setting>
+    <Setting Name="V2AppId" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Enter V2 App Reg AppId</Value>
+    </Setting>
+    <Setting Name="ReplyUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Enter Reply Url</Value>
+    </Setting>
+    <Setting Name="Folder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">No Folder selected.</Value>
+    </Setting>
+    <Setting Name="ShowRPs" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Resource" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Enter a Scope</Value>
+    </Setting>
+    <Setting Name="GetAccessToken" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

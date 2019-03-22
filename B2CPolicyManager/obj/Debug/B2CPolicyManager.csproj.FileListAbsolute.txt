@@ -1,0 +1,17 @@
+C:\Users\jasuri\source\repos\GTP\Jasuri\B2CPolicyManager\B2CPolicyManager\bin\Debug\B2CPolicyManager.exe.config
+C:\Users\jasuri\source\repos\GTP\Jasuri\B2CPolicyManager\B2CPolicyManager\bin\Debug\B2CPolicyManager.exe
+C:\Users\jasuri\source\repos\GTP\Jasuri\B2CPolicyManager\B2CPolicyManager\bin\Debug\B2CPolicyManager.pdb
+C:\Users\jasuri\source\repos\GTP\Jasuri\B2CPolicyManager\B2CPolicyManager\bin\Debug\Microsoft.Identity.Client.dll
+C:\Users\jasuri\source\repos\GTP\Jasuri\B2CPolicyManager\B2CPolicyManager\bin\Debug\Newtonsoft.Json.dll
+C:\Users\jasuri\source\repos\GTP\Jasuri\B2CPolicyManager\B2CPolicyManager\bin\Debug\Microsoft.Identity.Client.xml
+C:\Users\jasuri\source\repos\GTP\Jasuri\B2CPolicyManager\B2CPolicyManager\bin\Debug\Newtonsoft.Json.xml
+C:\Users\jasuri\source\repos\GTP\Jasuri\B2CPolicyManager\B2CPolicyManager\obj\Debug\B2CPolicyManager.B2CPolicyManager.resources
+C:\Users\jasuri\source\repos\GTP\Jasuri\B2CPolicyManager\B2CPolicyManager\obj\Debug\B2CPolicyManager.Properties.Resources.resources
+C:\Users\jasuri\source\repos\GTP\Jasuri\B2CPolicyManager\B2CPolicyManager\obj\Debug\B2CPolicyManager.csproj.GenerateResource.cache
+C:\Users\jasuri\source\repos\GTP\Jasuri\B2CPolicyManager\B2CPolicyManager\obj\Debug\B2CPolicyManager.csproj.CoreCompileInputs.cache
+C:\Users\jasuri\source\repos\GTP\Jasuri\B2CPolicyManager\B2CPolicyManager\obj\Debug\B2CPolicyManager.csproj.CopyComplete
+C:\Users\jasuri\source\repos\GTP\Jasuri\B2CPolicyManager\B2CPolicyManager\obj\Debug\B2CPolicyManager.exe
+C:\Users\jasuri\source\repos\GTP\Jasuri\B2CPolicyManager\B2CPolicyManager\obj\Debug\B2CPolicyManager.pdb
+C:\Users\jasuri\source\repos\GTP\Jasuri\B2CPolicyManager\B2CPolicyManager\obj\Debug\B2CPolicyManager.csprojAssemblyReference.cache
+C:\Users\jasuri\source\repos\GTP\Jasuri\B2CPolicyManager\B2CPolicyManager\bin\Debug\Microsoft.IdentityModel.Clients.ActiveDirectory.dll
+C:\Users\jasuri\source\repos\GTP\Jasuri\B2CPolicyManager\B2CPolicyManager\bin\Debug\Microsoft.IdentityModel.Clients.ActiveDirectory.xml

@@ -1,2 +1,97 @@
-# custom-policy-manager
-An application that allows making CRUD operations against Azure AD B2C Custom Policies
+# Manage custom polices in Azure AD B2C using Graph API
+
+This is a sample management tool for B2C Custom Policies.  [Custom policy](https://docs.microsoft.com/en-us/azure/active-directory-b2c/active-directory-b2c-overview-custom) allows you to customize every aspect of the authentication flow.
+
+## Features
+
+This sample demonstrates the following:
+
+* **Create** a custom policy
+* **Update** a custom policy
+* **Delete** a custom policy
+* **List** all custom policies
+
+    ![Policy Manager](/Images/b2cpolicymanager.PNG)
+
+## Getting Started
+
+### Prerequisites
+
+This sample requires the following:
+* [Visual Studio](https://www.visualstudio.com/en-us/downloads)
+* [Azure AD B2C tenant](https://docs.microsoft.com/en-us/azure/active-directory-b2c/active-directory-b2c-get-started)
+
+**NOTE: This API only accepts user tokens, and not application tokens. See more information below about Delegated Permissions.**
+
+### Quickstart
+
+#### Create global administrator
+
+* A global administrator account is required to run admin-level operations and to consent to application permissions.  (for example: admin@myb2ctenant.onmicrosoft.com)
+
+#### Setup and usage
+
+1. Sign in to the [Azure Portal](https://portal.azure.com/) using your Global Admin account.
+1. Select your Azure AD B2C directory from the directory filter.
+2. Select the **Azure Active Directory Blade**.
+3. Select **Application Registrations**, and create a new Application.
+4. Select Type `Native`, and enter the redirect API: `https://b2capi.com`, create the App.
+5. Select **Settings** - **Required Permissions** - **Add** - **Select An API**. Choose the `Microsoft Graph API`.
+6. Select the permission **Read and write your organization's trust framework policies**.
+7. Click **Save**, and click **Grant Permissions**.
+8. Select the **Azure AD B2C Blade** in your Azure AD B2C directory.
+9. Select **Application Registrations**, and create a new Application.
+10. Set the Reply URL as ``https://jwt.ms``.
+11. Open and build the solution in Visual Studio. 
+12. Run the application:
+    
+    a. Set the Tenant to your B2C tenant: something.onmicrosoft.com
+
+    b. Set the V1 Graph App Id to the Application Id from the App Registration created in the AAD Blade in Step 3.
+
+    c. Set the B2C Application Id to the App Id of an Application Registration created in the AAD B2C Blade in Step 9.
+
+    d. Set the reply url to a valid Reply URL set on the Application Registration referenced in Step 10 (https://jwt.ms).
+
+1. Click Login and login with the Global Admin of your B2C tenant. It must be in the format user@something.onmicrosoft.com.
+
+After logging in, any custom policies registered in the Identity Experience Framework at the portal or uploaded by this tool will be listed.
+
+Select a Policy Folder that contains your XML files to upload them.
+
+You can also open the working folder in VSCode by clicking Open Folder in VSCode.
+
+## Usage tips
+- Initial Usage  
+  - Select your working folder using the **Select Policy Folder** button.  
+
+  - Select Policy files to Upload into your Azure AD B2C tenant.  
+
+  - Click **Update Policies** to write the policy files into the tenant.  
+  - Use the **Log** area to troubleshoot any syntax errors.
+  - Once the policies are uploaded, they will appear in the List of policies. 
+
+  - Select a Policy in the list of policies and click **Launch with IE** to test it.
+
+- Select **Only show RPs** to only show the Relying Party files in the Polices list. You must **List Policies** for this to update the list based on the selection.
+- Select **Get Access token** if you would like to also acquire an access token. This will only work if **B2C Resource** is not null. Enter the scopes into the **B2C Resource** text field.
+- To launch a policy, select the Relying Party file from the policy list, and then click **Launch with IE** or **Launch with Chrome**. Both options will open an private window.
+- To test a SAML Relying Party, click the **SAML SP** button. This will use a test site (https://b2csamlrp.azurewebsites.net/SP/) to build a SAML request for your B2C Policy to the authentication endpoint. The b2csamlrp will also parse the resulting SAML Assertion from B2C.
+
+## Questions and comments
+
+Questions about this sample should be posted to [Stack Overflow](https://stackoverflow.com/questions/tagged/azure-ad-b2c). Make sure that your questions or comments are tagged with [azure-ad-b2c].
+
+## Contributing
+
+If you'd like to contribute to this sample, see [CONTRIBUTING.MD](/CONTRIBUTING.md).
+
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+## Resources
+
+The sample uses the Active Directory Authentication Library (ADAL) for authentication. The sample demonstrates delegated admin permissions. (App only permissions are not supported yet)
+
+**Delegated permissions** are used by apps that have a signed-in user present (in this case tenant administrator). For these apps either the user or an administrator consents to the permissions that the app requests and the app is delegated permission to act as the signed-in user when making calls to Microsoft Graph. Some delegated permissions can be consented to by non-administrative users, but some higher-privileged permissions require administrator consent.
+
+See [Delegated permissions, Application permissions, and effective permissions](https://developer.microsoft.com/en-us/graph/docs/concepts/permissions_reference#delegated-permissions-application-permissions-and-effective-permissions) for more information about these permission types.
