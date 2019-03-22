@@ -74,6 +74,8 @@ You can also open the working folder in VSCode by clicking Open Folder in VSCode
   - Select a Policy in the list of policies and click **Launch with IE** to test it.
 
 - Select **Only show RPs** to only show the Relying Party files in the Polices list. You must **List Policies** for this to update the list based on the selection.
+- Select a Policy and click **Delete Policy** to delete the policy from the tenant.
+- Select **Delete all policies** to delete all policies in this tenant.
 - Select **Get Access token** if you would like to also acquire an access token. This will only work if **B2C Resource** is not null. Enter the scopes into the **B2C Resource** text field.
 - To launch a policy, select the Relying Party file from the policy list, and then click **Launch with IE** or **Launch with Chrome**. Both options will open an private window.
 - To test a SAML Relying Party, click the **SAML SP** button. This will use a test site (https://b2csamlrp.azurewebsites.net/SP/) to build a SAML request for your B2C Policy to the authentication endpoint. The b2csamlrp will also parse the resulting SAML Assertion from B2C.
