@@ -21,8 +21,8 @@ namespace B2CPolicyManager
         public const string RedirectUriForAppAuthn = "https://login.microsoftonline.com";
 
         // leave these as-is - Private Preview Graph URIs for custom trust framework policy
-        public const string TrustFrameworkPolicesUri = "https://graph.microsoft.com/testcpimtf/trustFrameworkPolicies";
-        public const string TrustFrameworkPolicyByIDUri = "https://graph.microsoft.com/testcpimtf/trustFrameworkPolicies/{0}";
-        public const string TrustFrameworkPolicyByIDUriPUT = "https://graph.microsoft.com/testcpimtf/trustFrameworkPolicies/{0}/$value";
+        public const string TrustFrameworkPolicesUri = "https://graph.microsoft.com/beta/trustframework/policies";
+        public const string TrustFrameworkPolicyByIDUri = "https://graph.microsoft.com/beta/trustframework/policies/{0}";
+        public const string TrustFrameworkPolicyByIDUriPUT = "https://graph.microsoft.com/beta/trustframework/policies/{0}/$value";
     }
 }
