@@ -165,29 +165,34 @@ namespace B2CPolicyManager
 
             policyList.Items.Clear();
             List<string> unsortedList = new List<string>();
-            if (showRPs.Checked)
+
+            if (myPolicies.Value != null)
             {
                 foreach (Value policyValue in myPolicies.Value)
                 {
-                    if (!policyValue.Id.Contains("Base") && !policyValue.Id.Contains("Extensions"))
+                    if (showRPs.Checked)
+                    {
+                        if (!policyValue.Id.Contains("Base") && !policyValue.Id.Contains("Extensions"))
+                        {
+                            unsortedList.Add(policyValue.Id);
+                        }
+                    }
+                    else
                     {
                         unsortedList.Add(policyValue.Id);
                     }
                 }
-            }
 
-            if (!showRPs.Checked) {
-                foreach (Value policyValue in myPolicies.Value)
+                List<string> sortedList = unsortedList.OrderBy(x => x).ToList();
+
+                foreach (string policyValue in sortedList)
                 {
-
-                    unsortedList.Add(policyValue.Id);
+                    policyList.Items.Add(policyValue);
                 }
             }
-            List<string> sortedList = unsortedList.OrderBy(x => x).ToList();
-
-            foreach (string policyValue in sortedList)
+            else
             {
-                policyList.Items.Add(policyValue);
+                HTTPResponse.AppendText("\r\n" + DateTime.Now.ToString() + " - There are no custom policy files available in the tenant.\r\n");
             }
         }
 
