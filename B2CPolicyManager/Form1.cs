@@ -80,6 +80,12 @@ namespace B2CPolicyManager
                     UpdatePolicyList(pL);
                 }
             }
+            else
+            {
+                loginBtn.Text = "Login";
+                AuthenticationHelper.ClearCache();
+                policyList.Items.Clear();
+            }
         }
 
         private async void ListBtn_ClickAsync(object sender, EventArgs e)
