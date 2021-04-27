@@ -34,24 +34,26 @@ This sample requires the following:
 1. Sign in to the [Azure Portal](https://portal.azure.com/) using your Global Admin account.
 1. Select your Azure AD B2C directory from the directory filter.
 2. Select the **Azure Active Directory Blade**.
-3. Select **Application Registrations**, and create a new Application.
-4. Select Type `Native`, and enter the redirect API: `https://b2capi.com`, create the App.
-5. Select **Settings** - **Required Permissions** - **Add** - **Select An API**. Choose the `Microsoft Graph API`.
-6. Select the permission **Read and write your organization's trust framework policies**.
-7. Click **Save**, and click **Grant Permissions**.
-8. Select the **Azure AD B2C Blade** in your Azure AD B2C directory.
-9. Select **Application Registrations**, and create a new Application.
-10. Set the Reply URL as ``https://jwt.ms``.
-11. Open and build the solution in Visual Studio. 
-12. Run the application:
+3. Select **Application Registrations**, and then select **New registration**.
+4. Enter a Name for the application of your choice and then under **Supported account types**, select either **Accounts in this organizational directory only(Single tenant)** or **Accounts in any organizational directory(Multitenant)**.
+5. Under **Redirect URI**, select **Native**, and then enter `https://b2capi.com` and then click on **Register** button.
+6. Once the app registration is successful, select it and under **Manage** click on  **API permissions**.
+7. Click on **Add a permission** and select **Microsoft Graph**.  Under delegated permission select **Read and write your organization's trust framework policies**.
+8. Click **Save**, and click **Grant admin consent**.
+9. Select the **Azure AD B2C Blade** in your Azure AD B2C directory.
+10. Select **Application Registrations**, and then select **New registration**.
+11. Enter a Name for the application of your choice and then under **Supported account types**, leave the default selection as it is. That is,  **Accounts in any identity provider or organizational directory (for authenticating users with user flows)**.
+12. Under **Redirect URI**, select **Web**, and then enter ``https://jwt.ms``. Click on **Register** button.
+13. Open and build the solution in Visual Studio. 
+14. Run the application:
     
     a. Set the Tenant to your B2C tenant: something.onmicrosoft.com
 
-    b. Set the V1 Graph App Id to the Application Id from the App Registration created in the AAD Blade in Step 3.
+    b. Set the V1 Graph App Id to the Application Id from the App Registration created in the AAD Blade in Step 5.
 
-    c. Set the B2C Application Id to the App Id of an Application Registration created in the AAD B2C Blade in Step 9.
+    c. Set the B2C Application Id to the App Id of an Application Registration created in the AAD B2C Blade in Step 12.
 
-    d. Set the reply url to a valid Reply URL set on the Application Registration referenced in Step 10 (https://jwt.ms).
+    d. Set the reply url to a valid Reply URL set on the Application Registration referenced in Step 12 (https://jwt.ms).
 
 1. Click Login and login with the Global Admin of your B2C tenant. It must be in the format user@something.onmicrosoft.com.
 
