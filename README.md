@@ -38,7 +38,7 @@ This sample requires the following:
 5. Enter a Name for the application of your choice and then under **Supported account types**, select either **Accounts in this organizational directory only(Single tenant)** or **Accounts in any organizational directory(Multitenant)**.
 6. Under **Redirect URI**, select **Native**, and then enter `https://b2capi.com` and then click on **Register** button.
 7. Once the app registration is successful, select it and under **Manage** click on  **API permissions**.
-8. Click on **Add a permission** and select **Microsoft Graph**.  Under delegated permission select **Read and write your organization's trust framework policies**.
+8. Click on **Add a permission** and select **Microsoft Graph**.  Under delegated permission select **Read and write your organization's trust framework policies** and **Application.Read.All**.
 9. Click **Save**, and click **Grant admin consent**.
 10. Select the **Azure AD B2C Blade** in your Azure AD B2C directory.
 11. Select **Application Registrations**, and then select **New registration**.
