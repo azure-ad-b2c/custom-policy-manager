@@ -6,8 +6,10 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -19,6 +21,8 @@ namespace B2CPolicyManager
 {
     public partial class B2CPolicyManager : Form
     {
+        List<string> sortedList = new List<string>();
+        List<App> finalAppList = new List<App>();
         public B2CPolicyManager()
         {
             InitializeComponent();
@@ -78,6 +82,11 @@ namespace B2CPolicyManager
                     PolicyList pL = JsonConvert.DeserializeObject<PolicyList>(content);
 
                     UpdatePolicyList(pL);
+                    List<App> finalApplist = await RefreshAppListAsync();
+                    foreach (App app in finalApplist)
+                    {
+                        appList.Items.Add(app.displayName);
+                    }
                 }
             }
             else
@@ -170,6 +179,7 @@ namespace B2CPolicyManager
         {
 
             policyList.Items.Clear();
+            CultureInfo culture = new CultureInfo("en-GB", false);
             List<string> unsortedList = new List<string>();
 
             if (myPolicies.Value != null)
@@ -178,7 +188,7 @@ namespace B2CPolicyManager
                 {
                     if (showRPs.Checked)
                     {
-                        if (!policyValue.Id.Contains("Base") && !policyValue.Id.Contains("Extensions"))
+                        if (!policyValue.Id.Contains("BASE") && !policyValue.Id.Contains("EXTENSIONS"))// && (culture.CompareInfo.IndexOf(policyValue.Id, policyListFilter.Text, CompareOptions.IgnoreCase) >= 0))
                         {
                             unsortedList.Add(policyValue.Id);
                         }
@@ -189,11 +199,26 @@ namespace B2CPolicyManager
                     }
                 }
 
-                List<string> sortedList = unsortedList.OrderBy(x => x).ToList();
+                sortedList = unsortedList.OrderBy(x => x).ToList();
 
                 foreach (string policyValue in sortedList)
                 {
-                    policyList.Items.Add(policyValue);
+                    if (policyListFilter.Text != null)
+                    {
+                        if (culture.CompareInfo.IndexOf(policyValue, policyListFilter.Text, CompareOptions.IgnoreCase) >= 0)
+
+                        {
+                            string policyValueLower = policyValue.ToLower();
+                            policyList.Items.Add(policyValueLower);
+                        }
+                    }
+                    if (policyListFilter.Text == null)
+                    {
+                        string policyValueLower = policyValue.ToLower();
+                        policyList.Items.Add(policyValueLower);
+
+                    }
+
                 }
             }
             else
@@ -421,33 +446,15 @@ namespace B2CPolicyManager
             }
         }
 
-        private void AppIdtxt_TextChanged_1(object sender, EventArgs e)
-        {
-            //RunNowtxt.Text = ((TextBox)sender).Text;
-            if (policyList.SelectedItem != null)
-            {
-                RunNowtxt.Text = string.Format("https://login.microsoftonline.com/{0}/oauth2/v2.0/authorize?p={1}&client_id={2}&nonce=defaultNonce&redirect_uri={3}&scope=openid&response_type=id_token&prompt=login", tenantTxt.Text, policyList.SelectedItem.ToString(), AppIdtxt.Text, ReplyUrltxt.Text);
-            }
-            
-            Properties.Settings.Default.B2CAppId = AppIdtxt.Text;
-            Properties.Settings.Default.Save();
-        }
 
-        private void ReplyUrltxt_TextChanged(object sender, EventArgs e)
-        {
-            if (policyList.SelectedItem != null)
-            {
-                RunNowtxt.Text = string.Format("https://login.microsoftonline.com/{0}/oauth2/v2.0/authorize?p={1}&client_id={2}&nonce=defaultNonce&redirect_uri={3}&scope=openid&response_type=id_token&prompt=login", tenantTxt.Text, policyList.SelectedItem.ToString(), AppIdtxt.Text, ReplyUrltxt.Text);
-            }
-            Properties.Settings.Default.ReplyUrl = ReplyUrltxt.Text;
-            Properties.Settings.Default.Save();
-        }
+
+
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             if (policyList.SelectedItem != null)
             {
-                RunNowtxt.Text = string.Format("https://login.microsoftonline.com/{0}/oauth2/v2.0/authorize?p={1}&client_id={2}&nonce=defaultNonce&redirect_uri={3}&scope=openid&response_type=id_token&prompt=login", tenantTxt.Text, policyList.SelectedItem.ToString(), AppIdtxt.Text, ReplyUrltxt.Text);
+                RunNowtxt.Text = string.Format("https://login.microsoftonline.com/{0}/oauth2/v2.0/authorize?p={1}&client_id={2}&nonce=defaultNonce&redirect_uri={3}&scope=openid&response_type=id_token&prompt=login", tenantTxt.Text, policyList.SelectedItem.ToString(), appList.SelectedItem, replyUrl.SelectedItem);
             }
             Properties.Settings.Default.TenantId = tenantTxt.Text;
             Properties.Settings.Default.Save();
@@ -468,31 +475,35 @@ namespace B2CPolicyManager
 
             if (policyList.SelectedItem != null)
             {
-                if (tenantTxt.Text != null && tenantTxt.Text != "" && getAccessToken.Checked && b2cResource.Text != "")
+                if (appList.SelectedItem != null && tenantTxt.Text != null && tenantTxt.Text != "" && getAccessToken.Checked && b2cResource.Text != "")
                 {
+                    List<App> apps = finalAppList.Where(a => a.displayName == appList.SelectedItem).ToList();
+                    string appId = apps[0].appId;
                     Regex regex = new Regex(@"\w*");
                     Match match = regex.Match(tenantTxt.Text);
-                    RunNowtxt.Text = string.Format("https://{0}.b2clogin.com/{1}/oauth2/v2.0/authorize?p={2}&client_id={3}&nonce=defaultNonce&redirect_uri={4}&scope=openid {5}&response_type=id_token token&prompt=login", match.Value, tenantTxt.Text, policyList.SelectedItem.ToString(), AppIdtxt.Text, ReplyUrltxt.Text, b2cResource.Text);
+                    RunNowtxt.Text = string.Format("https://{0}.b2clogin.com/{1}/oauth2/v2.0/authorize?p={2}&client_id={3}&nonce=defaultNonce&redirect_uri={4}&scope=openid {5}&response_type=id_token token&prompt=login", match.Value, tenantTxt.Text, policyList.SelectedItem.ToString(), appId, replyUrl.SelectedItem, b2cResource.Text);
                 }
-                else if (tenantTxt.Text != null && tenantTxt.Text != "" && !getAccessToken.Checked)
+                else if (appList.SelectedItem != null && tenantTxt.Text != null && tenantTxt.Text != "" && !getAccessToken.Checked)
                 {
+                    List<App> apps = finalAppList.Where(a => a.displayName == appList.SelectedItem).ToList();
+                    string appId = apps[0].appId;
                     Regex regex = new Regex(@"\w*");
                     Match match = regex.Match(tenantTxt.Text);
-                    RunNowtxt.Text = string.Format("https://{0}.b2clogin.com/{1}/oauth2/v2.0/authorize?p={2}&client_id={3}&nonce=defaultNonce&redirect_uri={4}&scope=openid&response_type=id_token&prompt=login", match.Value, tenantTxt.Text, policyList.SelectedItem.ToString(), AppIdtxt.Text, ReplyUrltxt.Text);
+                    RunNowtxt.Text = string.Format("https://{0}.b2clogin.com/{1}/oauth2/v2.0/authorize?p={2}&client_id={3}&nonce=defaultNonce&redirect_uri={4}&scope=openid&response_type=id_token&prompt=login", match.Value, tenantTxt.Text, policyList.SelectedItem.ToString(), appId, replyUrl.SelectedItem);
                 }
                 else
                 {
-                    RunNowtxt.Text = string.Format("https://login.microsoftonline.com/{0}/oauth2/v2.0/authorize?p={1}&client_id={2}&nonce=defaultNonce&redirect_uri={3}&scope=openid&response_type=id_token&prompt=login", tenantTxt.Text, policyList.SelectedItem.ToString(), AppIdtxt.Text, ReplyUrltxt.Text);
+                    RunNowtxt.Text = string.Format("https://login.microsoftonline.com/{0}/oauth2/v2.0/authorize?p={1}&client_id={2}&nonce=defaultNonce&redirect_uri={3}&scope=openid&response_type=id_token&prompt=login", tenantTxt.Text, policyList.SelectedItem.ToString(), appList.SelectedItem, replyUrl.SelectedItem);
                 }
             }
         }
 
         private void B2CPolicyManager_Load(object sender, EventArgs e)
         {
-            this.AppIdtxt.Text = Properties.Settings.Default.B2CAppId;
+            this.appList.SelectedItem = Properties.Settings.Default.B2CAppId;
             this.tenantTxt.Text = Properties.Settings.Default.TenantId;
             this.v2AppIDGraphtxt.Text = Properties.Settings.Default.V2AppId;
-            this.ReplyUrltxt.Text = Properties.Settings.Default.ReplyUrl;
+            this.replyUrl.SelectedItem = Properties.Settings.Default.ReplyUrl;
             this.policyFolderLbl.Text = Properties.Settings.Default.Folder;
             this.showRPs.Checked = Properties.Settings.Default.ShowRPs;
             this.getAccessToken.Checked = Properties.Settings.Default.GetAccessToken;
@@ -626,6 +637,128 @@ namespace B2CPolicyManager
         {
             updateRunNow();
             Properties.Settings.Default.Resource = b2cResource.Text;
+            Properties.Settings.Default.Save();
+        }
+
+        private void textBox1_TextChanged_1(object sender, EventArgs e)
+        {
+            policyList.Items.Clear();
+            CultureInfo culture = new CultureInfo("en-GB", false);
+            foreach (string policyValue in sortedList)
+            {
+                if (policyListFilter.Text != null)
+                {
+                    if (culture.CompareInfo.IndexOf(policyValue, policyListFilter.Text, CompareOptions.IgnoreCase) >= 0)
+
+                    {
+                        string policyValueLower = policyValue.ToLower();
+                        policyList.Items.Add(policyValueLower);
+                    }
+                }
+            }
+        }
+
+        private async void button3_Click_1(object sender, EventArgs e)
+        {
+            List<App> finalApplist = await RefreshAppListAsync();
+            foreach (App app in finalApplist)
+            {
+                appList.Items.Add(app.displayName);
+            }
+        }
+
+        private async Task<List<App>> RefreshAppListAsync()
+        {
+            DateTime thisDay = DateTime.Now;
+
+            HTTPResponse.AppendText("\r\n" + thisDay.ToString() + " - Getting AAD B2C app registraions.\r\n");
+            HttpResponseMessage response = null;
+            response = await UserMode.HttpGetAsync("https://graph.microsoft.com/beta/applications");
+            string content = await response.Content.ReadAsStringAsync();
+            //HTTPResponse.AppendText(JToken.Parse(content).ToString(Formatting.Indented));
+            //HTTPResponse.AppendText(await response.Content.ReadAsStringAsync());
+
+            if (response.IsSuccessStatusCode == true)
+            {
+                DateTime thisDayGotList = DateTime.Now;
+                AppList appList = JsonConvert.DeserializeObject<AppList>(content);
+
+                List<App> sortedAppList = appList.value.OrderBy(o => o.displayName).ToList();
+                
+                foreach (App app in sortedAppList) { 
+                    if (app.signInAudience == "AzureADandPersonalMicrosoftAccount")
+                    {
+                        finalAppList.Add(app);
+                    }
+                }
+
+                HTTPResponse.AppendText("\r\n" + thisDayGotList.ToString() + " - Successfully updated app reg list.\r\n");
+                return finalAppList;
+            }
+            else
+            {
+                HTTPResponse.AppendText(content);
+                AppList appList = new AppList();
+                List <App> finalAppList = new List<App>();
+                return finalAppList;
+            }
+
+            
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            List<App> apps = finalAppList.Where(a => a.displayName == appList.SelectedItem).ToList();
+            string appId = apps[0].appId;
+            replyUrl.Items.Clear();
+            replyUrl.Text = "";
+            if (apps[0].web.redirectUris!= null) { 
+
+                foreach(string url in apps[0].web.redirectUris)
+                {
+                    replyUrl.Items.Add(url);
+                }                    
+            }
+
+            if (policyList.SelectedItem != null)
+            {
+                Regex regex = new Regex(@"\w*");
+                Match match = regex.Match(tenantTxt.Text);
+                RunNowtxt.Text = string.Format("https://{0}.b2clogin.com/{1}/oauth2/v2.0/authorize?p={2}&client_id={3}&nonce=defaultNonce&redirect_uri={4}&scope=openid {5}&response_type=id_token token&prompt=login", match.Value, tenantTxt.Text, policyList.SelectedItem.ToString(), appId, replyUrl.SelectedItem, b2cResource.Text);
+            }
+
+            Properties.Settings.Default.B2CAppId = apps[0].appId;
+            Properties.Settings.Default.Save();
+
+        }
+
+        private void label1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void replyUrl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            List<App> apps = finalAppList.Where(a => a.displayName == appList.SelectedItem).ToList();
+            string appId = apps[0].appId;
+
+            if (apps[0].web.redirectUris != null)
+            {
+
+                foreach (string url in apps[0].web.redirectUris)
+                {
+                    replyUrl.Items.Add(url);
+                }
+            }
+
+            if (policyList.SelectedItem != null)
+            {
+                Regex regex = new Regex(@"\w*");
+                Match match = regex.Match(tenantTxt.Text);
+                RunNowtxt.Text = string.Format("https://{0}.b2clogin.com/{1}/oauth2/v2.0/authorize?p={2}&client_id={3}&nonce=defaultNonce&redirect_uri={4}&scope=openid {5}&response_type=id_token token&prompt=login", match.Value, tenantTxt.Text, policyList.SelectedItem.ToString(), appId, replyUrl.SelectedItem, b2cResource.Text);
+            }
+
+            Properties.Settings.Default.ReplyUrl = replyUrl.SelectedItem.ToString();
             Properties.Settings.Default.Save();
         }
     }
