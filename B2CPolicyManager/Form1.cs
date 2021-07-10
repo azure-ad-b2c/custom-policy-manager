@@ -383,7 +383,9 @@ namespace B2CPolicyManager
                         response = await UserMode.HttpPutIDAsync(Constants.TrustFrameworkPolicyByIDUriPUT, id, xml);
                         if (response.IsSuccessStatusCode == false)
                         {
-                            HTTPResponse.AppendText(await response.Content.ReadAsStringAsync());
+                            string errContent = await response.Content.ReadAsStringAsync();
+                            uploadPolicyResponseError errorMsg = JsonConvert.DeserializeObject<uploadPolicyResponseError>(errContent);
+                            HTTPResponse.AppendText("\r\n" + errorMsg.error.message + "\r\n\r\n CorrelationId:" + errorMsg.error.innerError.correlationId + "\r\n Timestamp:" + errorMsg.error.innerError.date + "\r\n");
                         }
                         else
                         {
