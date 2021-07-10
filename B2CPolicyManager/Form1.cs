@@ -391,7 +391,7 @@ namespace B2CPolicyManager
                         {
                             DateTime thisDayUpdated = DateTime.Now;
 
-                            HTTPResponse.AppendText("\r\n" + thisDayUpdated.ToString() + " - Succefully updated " + file + "\r\n");
+                            HTTPResponse.AppendText("\r\n" + thisDayUpdated.ToString() + " - Successfully updated " + file + "\r\n");
                         }
                     }
 
