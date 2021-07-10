@@ -287,7 +287,7 @@
             this.IEBtn.Name = "IEBtn";
             this.IEBtn.Size = new System.Drawing.Size(91, 23);
             this.IEBtn.TabIndex = 24;
-            this.IEBtn.Text = "Open in IE";
+            this.IEBtn.Text = "Open in Edge";
             this.IEBtn.UseVisualStyleBackColor = true;
             this.IEBtn.Click += new System.EventHandler(this.IEBtn_Click);
             // 

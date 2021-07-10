@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using System.Web;
 
 namespace B2CPolicyManager
 {
@@ -564,7 +565,7 @@ namespace B2CPolicyManager
 
         private void IEBtn_Click(object sender, EventArgs e)
         {
-            string command = String.Format("start iexplore \"{0}\" -private", RunNowtxt.Text);
+            string command = String.Format("start msedge.exe \"{0}\" -inPrivate", RunNowtxt.Text);
             ProcessStartInfo startInfo = new ProcessStartInfo("cmd", "/c " + command)
             {
                 WindowStyle = ProcessWindowStyle.Hidden
@@ -722,11 +723,17 @@ namespace B2CPolicyManager
                 }                    
             }
 
-            if (policyList.SelectedItem != null)
+            if (appList.SelectedItem != null && replyUrl.SelectedItem != null && tenantTxt.Text != "" && getAccessToken.Checked && b2cResource.Text != "")
             {
                 Regex regex = new Regex(@"\w*");
                 Match match = regex.Match(tenantTxt.Text);
                 RunNowtxt.Text = string.Format("https://{0}.b2clogin.com/{1}/oauth2/v2.0/authorize?p={2}&client_id={3}&nonce=defaultNonce&redirect_uri={4}&scope=openid {5}&response_type=id_token token&prompt=login", match.Value, tenantTxt.Text, policyList.SelectedItem.ToString(), appId, replyUrl.SelectedItem, b2cResource.Text);
+            }
+            else if (appList.SelectedItem != null && replyUrl.SelectedItem != null && tenantTxt.Text != "" && !getAccessToken.Checked)
+            {
+                Regex regex = new Regex(@"\w*");
+                Match match = regex.Match(tenantTxt.Text);
+                RunNowtxt.Text = string.Format("https://{0}.b2clogin.com/{1}/oauth2/v2.0/authorize?p={2}&client_id={3}&nonce=defaultNonce&redirect_uri={4}&scope=openid&response_type=id_token&prompt=login", match.Value, tenantTxt.Text, policyList.SelectedItem.ToString(), appId, replyUrl.SelectedItem);
             }
 
             Properties.Settings.Default.B2CAppId = apps[0].appId;
