@@ -175,7 +175,7 @@
             this.RunNowtxt.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.RunNowtxt.Size = new System.Drawing.Size(246, 82);
             this.RunNowtxt.TabIndex = 21;
-            this.RunNowtxt.TextChanged += new System.EventHandler(this.RunNowtxt_TextChanged);
+            //this.RunNowtxt.TextChanged += new System.EventHandler(this.RunNowtxt_TextChanged);
             // 
             // label1
             // 

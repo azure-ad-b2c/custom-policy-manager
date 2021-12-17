@@ -142,7 +142,7 @@ namespace B2CPolicyManager
 
                     HTTPResponse.AppendText("\r\n" + thisDay.ToString() + " - Deleting " + policyList.SelectedItem.ToString() +"\r\n");
                     HttpResponseMessage response = null;
-                    response = await UserMode.HttpDeleteIDAsync(Constants.TrustFrameworkPolicesUri, Constants.TrustFrameworkPolicyByIDUri, policyList.SelectedItem.ToString());
+                    response = await UserMode.HttpDeleteIDAsync(Constants.TrustFrameworkPolicesUri, Constants.TrustFrameworkPolicyByIDUri, policyList.SelectedItem.ToString().ToUpper());
                     string content = await response.Content.ReadAsStringAsync();
 
                     if (response.IsSuccessStatusCode == true)
@@ -457,16 +457,13 @@ namespace B2CPolicyManager
         {
             if (policyList.SelectedItem != null)
             {
-                RunNowtxt.Text = string.Format("https://login.microsoftonline.com/{0}/oauth2/v2.0/authorize?p={1}&client_id={2}&nonce=defaultNonce&redirect_uri={3}&scope=openid&response_type=id_token&prompt=login", tenantTxt.Text, policyList.SelectedItem.ToString(), appList.SelectedItem, replyUrl.SelectedItem);
+                RunNowtxt.Text = string.Format("https://login.microsoftonline.com/{0}/oauth2/v2.0/authorize?p={1}&client_id={2}&nonce=defaultNonce&redirect_uri={3}&scope=openid&response_type=id_token&prompt=login&disable_cache=true", tenantTxt.Text, policyList.SelectedItem.ToString(), appList.SelectedItem, replyUrl.SelectedItem);
             }
             Properties.Settings.Default.TenantId = tenantTxt.Text;
             Properties.Settings.Default.Save();
         }
 
-        private void RunNowtxt_TextChanged(object sender, EventArgs e)
-        {
 
-        }
 
         private void policyList_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -484,7 +481,7 @@ namespace B2CPolicyManager
                     string appId = apps[0].appId;
                     Regex regex = new Regex(@"\w*");
                     Match match = regex.Match(tenantTxt.Text);
-                    RunNowtxt.Text = string.Format("https://{0}.b2clogin.com/{1}/oauth2/v2.0/authorize?p={2}&client_id={3}&nonce=defaultNonce&redirect_uri={4}&scope=openid {5}&response_type=id_token token&prompt=login", match.Value, tenantTxt.Text, policyList.SelectedItem.ToString(), appId, replyUrl.SelectedItem, b2cResource.Text);
+                    RunNowtxt.Text = string.Format("https://{0}.b2clogin.com/{1}/oauth2/v2.0/authorize?p={2}&client_id={3}&nonce=defaultNonce&redirect_uri={4}&scope=openid {5}&response_type=id_token token&prompt=login&disable_cache=true", match.Value, tenantTxt.Text, policyList.SelectedItem.ToString(), appId, replyUrl.SelectedItem, b2cResource.Text);
                 }
                 else if (appList.SelectedItem != null && tenantTxt.Text != null && tenantTxt.Text != "" && !getAccessToken.Checked)
                 {
@@ -492,11 +489,11 @@ namespace B2CPolicyManager
                     string appId = apps[0].appId;
                     Regex regex = new Regex(@"\w*");
                     Match match = regex.Match(tenantTxt.Text);
-                    RunNowtxt.Text = string.Format("https://{0}.b2clogin.com/{1}/oauth2/v2.0/authorize?p={2}&client_id={3}&nonce=defaultNonce&redirect_uri={4}&scope=openid&response_type=id_token&prompt=login", match.Value, tenantTxt.Text, policyList.SelectedItem.ToString(), appId, replyUrl.SelectedItem);
+                    RunNowtxt.Text = string.Format("https://{0}.b2clogin.com/{1}/oauth2/v2.0/authorize?p={2}&client_id={3}&nonce=defaultNonce&redirect_uri={4}&scope=openid&response_type=id_token&prompt=login&disable_cache=true", match.Value, tenantTxt.Text, policyList.SelectedItem.ToString(), appId, replyUrl.SelectedItem);
                 }
                 else
                 {
-                    RunNowtxt.Text = string.Format("https://login.microsoftonline.com/{0}/oauth2/v2.0/authorize?p={1}&client_id={2}&nonce=defaultNonce&redirect_uri={3}&scope=openid&response_type=id_token&prompt=login", tenantTxt.Text, policyList.SelectedItem.ToString(), appList.SelectedItem, replyUrl.SelectedItem);
+                    RunNowtxt.Text = string.Format("https://login.microsoftonline.com/{0}/oauth2/v2.0/authorize?p={1}&client_id={2}&nonce=defaultNonce&redirect_uri={3}&scope=openid&response_type=id_token&prompt=login&disable_cache=true", tenantTxt.Text, policyList.SelectedItem.ToString(), appList.SelectedItem, replyUrl.SelectedItem);
                 }
             }
         }
@@ -727,13 +724,13 @@ namespace B2CPolicyManager
             {
                 Regex regex = new Regex(@"\w*");
                 Match match = regex.Match(tenantTxt.Text);
-                RunNowtxt.Text = string.Format("https://{0}.b2clogin.com/{1}/oauth2/v2.0/authorize?p={2}&client_id={3}&nonce=defaultNonce&redirect_uri={4}&scope=openid {5}&response_type=id_token token&prompt=login", match.Value, tenantTxt.Text, policyList.SelectedItem.ToString(), appId, replyUrl.SelectedItem, b2cResource.Text);
+                RunNowtxt.Text = string.Format("https://{0}.b2clogin.com/{1}/oauth2/v2.0/authorize?p={2}&client_id={3}&nonce=defaultNonce&redirect_uri={4}&scope=openid {5}&response_type=id_token token&prompt=login&disable_cache=true", match.Value, tenantTxt.Text, policyList.SelectedItem.ToString(), appId, replyUrl.SelectedItem, b2cResource.Text);
             }
             else if (appList.SelectedItem != null && replyUrl.SelectedItem != null && tenantTxt.Text != "" && !getAccessToken.Checked)
             {
                 Regex regex = new Regex(@"\w*");
                 Match match = regex.Match(tenantTxt.Text);
-                RunNowtxt.Text = string.Format("https://{0}.b2clogin.com/{1}/oauth2/v2.0/authorize?p={2}&client_id={3}&nonce=defaultNonce&redirect_uri={4}&scope=openid&response_type=id_token&prompt=login", match.Value, tenantTxt.Text, policyList.SelectedItem.ToString(), appId, replyUrl.SelectedItem);
+                RunNowtxt.Text = string.Format("https://{0}.b2clogin.com/{1}/oauth2/v2.0/authorize?p={2}&client_id={3}&nonce=defaultNonce&redirect_uri={4}&scope=openid&response_type=id_token&prompt=login&disable_cache=true", match.Value, tenantTxt.Text, policyList.SelectedItem.ToString(), appId, replyUrl.SelectedItem);
             }
 
             Properties.Settings.Default.B2CAppId = apps[0].appId;
@@ -764,7 +761,7 @@ namespace B2CPolicyManager
             {
                 Regex regex = new Regex(@"\w*");
                 Match match = regex.Match(tenantTxt.Text);
-                RunNowtxt.Text = string.Format("https://{0}.b2clogin.com/{1}/oauth2/v2.0/authorize?p={2}&client_id={3}&nonce=defaultNonce&redirect_uri={4}&scope=openid {5}&response_type=id_token token&prompt=login", match.Value, tenantTxt.Text, policyList.SelectedItem.ToString(), appId, replyUrl.SelectedItem, b2cResource.Text);
+                RunNowtxt.Text = string.Format("https://{0}.b2clogin.com/{1}/oauth2/v2.0/authorize?p={2}&client_id={3}&nonce=defaultNonce&redirect_uri={4}&scope=openid {5}&response_type=id_token token&prompt=login&disable_cache=true", match.Value, tenantTxt.Text, policyList.SelectedItem.ToString(), appId, replyUrl.SelectedItem, b2cResource.Text);
             }
 
             Properties.Settings.Default.ReplyUrl = replyUrl.SelectedItem.ToString();
