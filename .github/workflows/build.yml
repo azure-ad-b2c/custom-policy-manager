@@ -1,0 +1,44 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    strategy:
+      max-parallel: 1
+      matrix:
+        project:
+          - b2cpolicymanager-cli
+          - B2CPolicyManager-UI
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v7
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore ${{ matrix.project }}/${{ matrix.project }}.csproj
+
+    - name: Build
+      run: dotnet build ${{ matrix.project }}/${{ matrix.project }}.csproj --configuration Release --no-restore
+
+    - name: Publish
+      run: dotnet publish ${{ matrix.project }}/${{ matrix.project }}.csproj --configuration Release --no-restore --output ./output/${{ matrix.project }}
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v7
+      with:
+        name: ${{ matrix.project }}
+        path: ./output/${{ matrix.project }}

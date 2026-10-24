@@ -16,13 +16,10 @@ namespace B2CPolicyManager
         // Your tenant Name, for example "myb2ctenant.onmicrosoft.com"
         //public const string Tenant = "b2cprod.onmicrosoft.com";
 
-        // leave these as-is - URIs used for auth
-        public string AuthorityUri = "https://login.microsoftonline.com/" + Properties.Settings.Default.TenantId + "/oauth2/v2.0/token";
-        public const string RedirectUriForAppAuthn = "https://login.microsoftonline.com";
-
         // leave these as-is - Private Preview Graph URIs for custom trust framework policy
-        public const string TrustFrameworkPolicesUri = "https://graph.microsoft.com/beta/trustframework/policies";
+        public const string TrustFrameworkPoliciesUri = "https://graph.microsoft.com/beta/trustframework/policies";
         public const string TrustFrameworkPolicyByIDUri = "https://graph.microsoft.com/beta/trustframework/policies/{0}";
         public const string TrustFrameworkPolicyByIDUriPUT = "https://graph.microsoft.com/beta/trustframework/policies/{0}/$value";
-    }
+        // public const string TrustFrameworkPolicyContentsByTenantAndIDUri = "https://main.b2cadmin.ext.azure.com/api/trustframework/GetCustomPolicyAsXml?sendAsAttachment=false&tenantId={0}&policyId={1}&getBasePolicies=false";
+	}
 }

@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/Solution Items/.github/" />
+  <Folder Name="/Solution Items/.github/workflows/">
+    <File Path=".github/workflows/build.yml" />
+  </Folder>
+  <Project Path="b2cpolicymanager-cli/b2cpolicymanager-cli.csproj" />
+  <Project Path="B2CPolicyManager-UI/B2CPolicyManager-UI.csproj" />
+  <Project Path="B2CPolicyManager/B2CPolicyManager.csproj" />
+</Solution>
